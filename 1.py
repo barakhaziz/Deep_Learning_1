@@ -202,3 +202,14 @@ def compute_cost(AL: np.ndarray, Y: np.ndarray, parameters: Dict, l2_regularizat
         l2_cost = (EPSILON / (2 * n_examples)) * l2_cost
         cost += l2_cost
     return cost
+
+
+def apply_batchnorm(A: np.ndarray) -> np.ndarray:
+    """
+    Performs batchnorm on the received activation values of a given layer
+    :param A: The activation values of a given layer
+    :return: NA - the normalized activation values, based on the formula learned in class
+
+    """
+    NA = (A - np.mean(A)) / np.sqrt(np.var(A) + EPSILON)
+    return NA
