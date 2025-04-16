@@ -1,4 +1,8 @@
 import numpy as np
+from typing import Dict, Tuple, List
+
+np.random.seed(2)
+EPSILON = 1e-6
 
 def initialize_parameters(layer_dims):
     """
@@ -179,3 +183,22 @@ def L_model_forward(X, parameters, use_batchnorm):
     caches.append(cache)
     
     return AL, caches
+
+def compute_cost(AL: np.ndarray, Y: np.ndarray, parameters: Dict, l2_regularization: bool = False) -> float:
+    """
+    Compute cost function categorical cross-entropy loss
+    :param AL: probability vector corresponding to your label predictions, shape (num_of_classes, number of examples)
+    :param Y: the labels vector (i.e. the ground truth)
+    :param parameters: the W and b parameters of each layer
+    :param l2_regularization: boolean - indicates if l2 regularization should be used
+    :return: cost – the cross-entropy cost
+    """
+    n_examples = Y.shape[1]
+    cost = -1 / n_examples * sum(np.sum(np.multiply(Y, np.log(AL + EPSILON)), axis=0))
+
+    # l2 Norm
+    if l2_regularization:
+        l2_cost = sum([np.sum(np.square(layer[0])) for layer in parameters.values()])
+        l2_cost = (EPSILON / (2 * n_examples)) * l2_cost
+        cost += l2_cost
+    return cost
