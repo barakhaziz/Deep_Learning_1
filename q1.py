@@ -168,9 +168,7 @@ def L_model_forward(X, parameters, use_batchnorm):
         # Note: Batch normalization implementation is not included here
         # It would be applied after activation
         if use_batchnorm:
-            # Placeholder for batch normalization code
-            # Would need proper implementation if use_batchnorm is True
-            pass
+            A = apply_batchnorm(A)
     
     # Implement LINEAR -> SOFTMAX for the last layer (Lth layer)
     W = parameters['W' + str(L)]
