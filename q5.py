@@ -53,7 +53,7 @@ def main():
         learning_rate=0.009,  # Use a learning rate of 0.009
         num_iterations=100000,
         batch_size=64,
-        use_batchnorm=False  # Do not activate the batchnorm option at this point
+        use_batchnorm=True  # Do not activate the batchnorm option at this point
     )
     end_time = timeit.default_timer()
     elapsed_time = end_time - start_time_train
@@ -65,7 +65,7 @@ def main():
               X=x_test,
               Y=y_test,
               parameters=parameters,
-              use_batchnorm=False))
+              use_batchnorm=True))
     end_time = timeit.default_timer()
     elapsed_time = end_time - start_time_test
 
@@ -74,7 +74,7 @@ def main():
 
     n_layers = len(layer_dims) - 1
     fig, axes = plt.subplots(1, n_layers, figsize=(20, 5))
-    fig.suptitle('Distribution of Weight Size by Layer - Without L2 Regularization and Batch Normalization')
+    fig.suptitle('Distribution of Weight Size by Layer - Without L2 Regularization and with Batch Normalization')
 
     weights_means = []
     for i in range(n_layers):
