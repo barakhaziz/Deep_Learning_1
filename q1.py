@@ -25,8 +25,8 @@ def initialize_parameters(layer_dims):
     for l in range(1, L + 1):
         # Initialize weights using random normal distribution
         # He initialization scaling factor for better training with deep networks
-        parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * np.sqrt(2. / layer_dims[l-1])
-        
+       # parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * np.sqrt(2. / layer_dims[l-1])
+        parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * 0.1
         # Initialize biases with zeros
         parameters['b' + str(l)] = np.zeros((layer_dims[l], 1))
         
@@ -209,5 +209,12 @@ def apply_batchnorm(A: np.ndarray) -> np.ndarray:
     :return: NA - the normalized activation values, based on the formula learned in class
 
     """
-    NA = (A - np.mean(A)) / np.sqrt(np.var(A) + EPSILON)
+    # Calculate mean and variance across the batch dimension (axis=1)
+    # A has shape (features, batch_size)
+    mean = np.mean(A, axis=1, keepdims=True)  # Normalize across batch, for each feature
+    var = np.var(A, axis=1, keepdims=True)    # Normalize across batch, for each feature
+    
+    # Apply normalization
+    NA = (A - mean) / np.sqrt(var + EPSILON)
+    
     return NA

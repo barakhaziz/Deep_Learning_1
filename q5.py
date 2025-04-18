@@ -52,8 +52,8 @@ def main():
         layer_dims=layer_dims,
         learning_rate=0.009,  # Use a learning rate of 0.009
         num_iterations=100000,
-        batch_size=64,
-        use_batchnorm=True  # Do not activate the batchnorm option at this point
+        batch_size=256,  # Increase batch size to 256 to match reference implementation
+        use_batchnorm=True
     )
     end_time = timeit.default_timer()
     elapsed_time = end_time - start_time_train
