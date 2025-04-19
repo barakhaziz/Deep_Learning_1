@@ -25,8 +25,8 @@ def initialize_parameters(layer_dims):
     for l in range(1, L + 1):
         # Initialize weights using random normal distribution
         # He initialization scaling factor for better training with deep networks
-       # parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * np.sqrt(2. / layer_dims[l-1])
-        parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * 0.1
+        parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * np.sqrt(2. / layer_dims[l-1])
+        #parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * 0.1
         # Initialize biases with zeros
         parameters['b' + str(l)] = np.zeros((layer_dims[l], 1))
         
@@ -155,6 +155,7 @@ def L_model_forward(X, parameters, use_batchnorm):
         A_prev = A
         
         # Get parameters for current layer
+        # w is 2-dim matrix
         W = parameters['W' + str(l)]
         b = parameters['b' + str(l)]
         
@@ -167,6 +168,7 @@ def L_model_forward(X, parameters, use_batchnorm):
         # Apply batch normalization if specified
         # Note: Batch normalization implementation is not included here
         # It would be applied after activation
+
         if use_batchnorm:
             A = apply_batchnorm(A)
     

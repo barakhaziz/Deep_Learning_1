@@ -52,12 +52,14 @@ def main():
         layer_dims=layer_dims,
         learning_rate=0.009,  # Use a learning rate of 0.009
         num_iterations=100000,
-        batch_size=256,  # Increase batch size to 256 to match reference implementation
+        batch_size=64,  # Increase batch size to 256 to match reference implementation
         use_batchnorm=True
     )
     end_time = timeit.default_timer()
     elapsed_time = end_time - start_time_train
     print('Training duration: ', str(round(elapsed_time, 3)))
+    train_acc_history = accuracy_histories['train']
+    val_acc_history = accuracy_histories['validation']
 
     start_time_test = timeit.default_timer()
     print('Testing Accuracy: ',
@@ -65,7 +67,7 @@ def main():
               X=x_test,
               Y=y_test,
               parameters=parameters,
-              use_batchnorm=True))
+              use_batchnorm=False))
     end_time = timeit.default_timer()
     elapsed_time = end_time - start_time_test
 
@@ -105,6 +107,32 @@ def main():
     plt.show()
 
     print(pd.DataFrame({'layer': np.arange(n_layers) + 1, 'mse': weights_means}))
+
+    # Accuracy over iterations plot
+    plt.figure(figsize=(8, 5))
+    iteration_steps = list(range(0, len(train_acc_history) * 100, 100))
+    plt.plot(iteration_steps, train_acc_history, label='Training Accuracy', color='royalblue')
+    plt.plot(iteration_steps, val_acc_history, label='Validation Accuracy', color='darkorange')
+    plt.title('Q5 - No L2 Regularization and Yes Batch Normalization')
+    plt.xlabel('Iterations')
+    plt.ylabel('Accuracy')
+    plt.ylim([0, 1])
+    plt.grid(True)
+    plt.legend()
+    # Annotate final values with slight vertical offset
+    plt.text(iteration_steps[-1], train_acc_history[-1] + 0.005, f"{train_acc_history[-1] * 100:.2f}%", va='bottom')
+    plt.text(iteration_steps[-1], val_acc_history[-1] - 0.005, f"{val_acc_history[-1] * 100:.2f}%", va='top')
+    plt.tight_layout()
+
+    # Cost over iterations plot
+    plt.figure(figsize=(6, 4))
+    plt.plot(np.squeeze(costs))
+    plt.ylabel('Cost')
+    plt.xlabel('Number of iterations (·10²)')
+    plt.title("Cost vs. Iterations")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == "__main__":

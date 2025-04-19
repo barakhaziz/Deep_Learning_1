@@ -43,6 +43,7 @@ def main():
     input_dim = x_train.shape[0]
 
     # Q4.b Batch Normalization = False
+    # l1: 20 neurons, l2: 7 neurons and so on...
     layer_dims = [input_dim, 20, 7, 5, 10]  # 4 layers (aside from the input layer), with the following sizes: 20,7,5,10
 
     start_time_train = timeit.default_timer()
@@ -52,12 +53,14 @@ def main():
         layer_dims=layer_dims,
         learning_rate=0.009,  # Use a learning rate of 0.009
         num_iterations=100000,
-        batch_size=64,
+        batch_size=128,
         use_batchnorm=False  # Do not activate the batchnorm option at this point
     )
     end_time = timeit.default_timer()
     elapsed_time = end_time - start_time_train
     print('Training duration: ', str(round(elapsed_time, 3)))
+    train_acc_history = accuracy_histories['train']
+    val_acc_history = accuracy_histories['validation']
 
     start_time_test = timeit.default_timer()
     print('Testing Accuracy: ',
@@ -105,6 +108,32 @@ def main():
     plt.show()
 
     print(pd.DataFrame({'layer': np.arange(n_layers) + 1, 'mse': weights_means}))
+
+    # Accuracy over iterations plot
+    plt.figure(figsize=(8, 5))
+    iteration_steps = list(range(0, len(train_acc_history) * 100, 100))
+    plt.plot(iteration_steps, train_acc_history, label='Training Accuracy', color='royalblue')
+    plt.plot(iteration_steps, val_acc_history, label='Validation Accuracy', color='darkorange')
+    plt.title('Q4 - No L2 Regularization and No Batch Normalization')
+    plt.xlabel('Iterations')
+    plt.ylabel('Accuracy')
+    plt.ylim([0, 1])
+    plt.grid(True)
+    plt.legend()
+    # Annotate final values with slight vertical offset
+    plt.text(iteration_steps[-1], train_acc_history[-1] + 0.005, f"{train_acc_history[-1] * 100:.2f}%", va='bottom')
+    plt.text(iteration_steps[-1], val_acc_history[-1] - 0.005, f"{val_acc_history[-1] * 100:.2f}%", va='top')
+    plt.tight_layout()
+
+    # Cost over iterations plot
+    plt.figure(figsize=(6, 4))
+    plt.plot(np.squeeze(costs))
+    plt.ylabel('Cost')
+    plt.xlabel('Number of iterations (·10²)')
+    plt.title("Cost vs. Iterations")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == "__main__":
