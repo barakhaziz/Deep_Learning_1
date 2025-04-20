@@ -67,7 +67,7 @@ def main():
               X=x_test,
               Y=y_test,
               parameters=parameters,
-              use_batchnorm=False))
+              use_batchnorm=True))
     end_time = timeit.default_timer()
     elapsed_time = end_time - start_time_test
 

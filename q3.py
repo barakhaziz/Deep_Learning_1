@@ -80,9 +80,6 @@ def L_layer_model(
 
                 print(
                     f"Epoch_{epoch_counter}/Iteration_{i}: training_cost = {round(cost, 3)}"
-                    f" | training_accuracy = {round(train_accuracy * 100, 3)}%"
-                    f" | validation_accuracy = {round(val_accuracy * 100, 3)}%"
-                    f" | best validation_accuracy = {round(best_validation_accuracy * 100, 3)}%"
                 )
 
                 # Check EarlyStopping - if best validation accuracy >> current val accuracy then score isn't improving
